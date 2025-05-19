@@ -1,1 +1,109 @@
+% --- Progenitores ---
+progenitor(antonita, joao).
+progenitor(antonita, clara).
+progenitor(antonita, francisco).
+progenitor(antonita, valeria).
+progenitor(antonita, ana).
+
+progenitor(pietro, joao).
+progenitor(pietro, clara).
+progenitor(pietro, francisco).
+progenitor(pietro, valeria).
+progenitor(pietro, ana).
+
+progenitor(ana, helena).
+progenitor(ana, joana).
+progenitor(joao, mario).
+
+progenitor(helena, carlos).
+progenitor(mario, carlos).
+
+progenitor(clara, pietro_junior).
+progenitor(clara, enzo).
+
+progenitor(jacynto, francisca).
+progenitor(jacynto, antonia).
+progenitor(claudia, francisca).
+progenitor(claudia, antonia).
+
+progenitor(luzia, jacynto).
+progenitor(pablo, jacynto).
+
+% --- Sexo das Pessoas ---
+sexo(antonita, feminino).
+sexo(joao, masculino).
+sexo(pietro, masculino).
+sexo(clara, feminino).
+sexo(francisco, masculino).
+sexo(valeria, feminino).
+sexo(ana, feminino).
+sexo(helena, feminino).
+sexo(joana, feminino).
+sexo(mario, masculino).
+sexo(carlos, masculino).
+sexo(fabiana, feminino).
+sexo(francisca, feminino).
+sexo(antonia, feminino).
+sexo(claudia, feminino).
+sexo(luzia, feminino).
+sexo(pietro_junior, masculino).
+sexo(enzo, masculino).
+sexo(jacynto, masculino).
+sexo(pablo, masculino).
+
+% --- Regras ---
+
+% Regra: Irmãos (compartilham pelo menos um progenitor e são diferentes)
+irmao(X, Y) :-
+    progenitor(P, X),
+    progenitor(P, Y),
+    X \= Y.
+
+% Avô
+avo_m(X, Y) :-
+    progenitor(X, A),
+    progenitor(A, Y),
+    sexo(X, masculino).
+
+% Avó
+avo_f(X, Y) :-
+    progenitor(X, A),
+    progenitor(A, Y),
+    sexo(X, feminino).
+
+% Tio
+tio(X, Y) :-
+    progenitor(P, Y),
+    irmao(X, P),
+    sexo(X, masculino).
+
+% Tia
+tia(X, Y) :-
+    progenitor(P, Y),
+    irmao(X, P),
+    sexo(X, feminino).
+
+% Primo
+primo(X, Y) :-
+    progenitor(P, X),
+    (tio(P, Y); tia(P, Y)),
+    sexo(X, masculino).
+
+% Prima
+prima(X, Y) :-
+    progenitor(P, X),
+    (tio(P, Y); tia(P, Y)),
+    sexo(X, feminino).
+
+% Descendente
+descendente(X, Y) :- progenitor(Y, X).
+descendente(X, Y) :-
+    progenitor(Y, A),
+    descendente(X, A).
+
+% Ascendente
+ascendente(X, Y) :- progenitor(X, Y).
+ascendente(X, Y) :-
+    progenitor(A, Y),
+    ascendente(X, A).
 
